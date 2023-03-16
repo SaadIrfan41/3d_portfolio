@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import ComputerCanvas from './components/ComputerModel'
 import { motion } from 'framer-motion'
@@ -8,31 +8,52 @@ import Experience from './components/Experience'
 import Contact from './components/Contact'
 import StarsCanvas from './components/Starts'
 import Starts2 from './components/Starts2'
+import Technologies from './components/Technologies'
+import Work from './components/Work'
 const HomePage = () => {
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      if (scrollTop > 100) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll)
+      return () => window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
   return (
     <div className='bg-[#050816] text-white'>
-      <div className='  bg-[url("/herobg.png")] bg-cover bg-no-repeat bg-center relative'>
-        <div className='  px-6  py-5 fixed top-0 w-full z-10'>
-          <nav className=' flex items-center justify-between max-w-7xl mx-auto'>
+      <div className='  bg-[url("/herobg.png")] bg-cover bg-no-repeat bg-center relative '>
+        <div
+          className={`  px-6  py-5 fixed top-0 w-full z-50  ${
+            scrolled ? 'bg-[#050816]' : 'bg-transparent '
+          }`}
+        >
+          <nav
+            className={` flex items-center justify-between max-w-7xl mx-auto `}
+          >
             <div className='flex items-center  font-extrabold'>
               <img
                 src='/logo.png'
                 alt='LOgo'
                 className=' shrink-0 object-cover w-36 h-16  '
               />
-              <h1 className=' text-white text-2xl'>Saad Irfan Mughal</h1>
+              <h1 className='hidden lg:block text-white text-2xl'>
+                Saad Irfan Mughal
+              </h1>
             </div>
 
             <div className='flex gap-10 text-lg text-[#aaa6c3] font-medium'>
-              <Link href='/' className=' cursor-pointer'>
-                About
-              </Link>
-              <Link href='/' className=''>
-                Work
-              </Link>
-              <Link href='/' className=''>
-                Contact
-              </Link>
+              <a href='#about'>About</a>
+              <a href='#experience'>Work</a>
+              <a href='#contact'>Contact</a>
             </div>
           </nav>
         </div>
@@ -75,8 +96,8 @@ const HomePage = () => {
       </div>
       <About />
       <Experience />
-      <div>Tech</div>
-      <div>Works</div>
+      <Technologies />
+      <Work />
       <div className='z-0 relative'>
         <Contact />
         {/* <Starts2 /> */}

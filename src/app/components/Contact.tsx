@@ -23,7 +23,6 @@ const sendContactForm = async (data: FormData) =>
   })
 
 const Contact = () => {
-  const [loading, setloading] = useState(false)
   const schema: ZodType<FormData> = z.object({
     name: z
       .string()
@@ -33,7 +32,7 @@ const Contact = () => {
       .string()
       .min(2, 'Message must contain at least 2 character(s)')
       .max(500, 'Name must contain at most 500 character(s)'),
-    // lastName: z.string().min(2).max(30),
+
     email: z
       .string()
       .email()
@@ -45,31 +44,29 @@ const Contact = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   })
 
   const submitData = async (data: FormData) => {
-    setloading(true)
-
     try {
       console.log('IT WORKED', data)
       await sendContactForm(data)
-      setloading(false)
+      reset()
     } catch (error) {
-      setloading(false)
-
       console.log(error)
     }
   }
 
   return (
     <div
-      id='experience'
-      //   className=' px-8 md:px-16  py-10 mt-24 overflow-hidden'
       className={`xl:mt-12  flex xl:flex-row flex-col-reverse gap-10 overflow-hidden xl:max-w-7xl mx-auto max-w-md md:max-w-xl lg:max-w-4xl z-10`}
     >
+      <span className='mt-5' id='contact'>
+        &nbsp;
+      </span>
       <motion.div
         // variants={slideIn('left', 'tween', 0.2, 1)}
         className='flex-[0.75] bg-[#100D25] p-8 rounded-2xl'
@@ -131,10 +128,10 @@ const Contact = () => {
 
           <button
             type='submit'
-            disabled={loading}
+            disabled={isSubmitting}
             className='bg-[#151030] py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary disabled:cursor-no-drop'
           >
-            {loading ? (
+            {isSubmitting ? (
               <div role='status' className='flex items-center gap-x-2'>
                 <span className=''>Sending</span>
 
