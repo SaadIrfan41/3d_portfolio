@@ -3,7 +3,6 @@ import React from 'react'
 import { motion } from 'framer-motion'
 //@ts-ignore
 import Tilt from 'react-tilt'
-import { fadeIn, textVariant } from '@/utils/animations'
 
 const services = [
   {
