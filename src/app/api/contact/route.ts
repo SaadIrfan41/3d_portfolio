@@ -2,15 +2,15 @@ import { mailOptions, transporter } from '@/utils/nodemailer'
 import { NextApiRequest } from 'next'
 import { NextResponse } from 'next/server'
 
-export async function POST(request: NextApiRequest) {
-  console.log(mailOptions)
+export async function POST(request: Request) {
+  const { name, email, message } = await request.json()
   try {
     const res = await transporter.sendMail({
       ...mailOptions,
       // ...generateEmailContent(data),
       subject: 'Portfolio Contact Form Submission',
       text: 'This is a test string',
-      html: '<h1>TEST TITLE</h1><p>SOME BODY TEXT</p>',
+      html: `<h1>Name:${name}</h1><br/><h2>Email:${email}</h2><p>Message:${message}</p>`,
     })
     console.log(res)
     return NextResponse.json({ success: true }, { status: 200 })
